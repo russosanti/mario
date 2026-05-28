@@ -21,6 +21,8 @@ function GameObject:init(def)
     self.onCollide = def.onCollide
     self.onConsume = def.onConsume
     self.hit = def.hit
+    self.containsKey = def.containsKey
+    self.unlockable = def.unlockable
 end
 
 function GameObject:collides(target)

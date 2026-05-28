@@ -56,6 +56,9 @@ PLAYER_JUMP_VELOCITY = -300
 -- snail movement speed
 SNAIL_MOVE_SPEED = 10
 
+-- key and lock size
+LOCK_SIZE = 16
+
 --
 -- tile IDs
 --
@@ -84,6 +87,14 @@ CRATES = {
 
 GEMS = {
     1, 2, 3, 4, 5, 6, 7, 8
+}
+
+KEYS = {
+    1, 2, 3, 4
+}
+
+LOCKS = {
+    5, 6, 7, 8
 }
 
 JUMP_BLOCKS = {}

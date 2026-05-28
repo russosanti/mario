@@ -71,15 +71,23 @@ function PlayerJumpState:update(dt)
 
             -- check for vertical and horizontal overlap (bump from below)
             if self.player.dy < 0 and
-               prevHead >= blockBottom and
-               currHead <= blockBottom and
-               playerRight > blockLeft and
-               playerLeft < blockRight then
-
-                object.onCollide(object)
-                self.player.y = object.y + object.height
-                self.player.dy = 0
-                self.player:changeState('falling')
+                prevHead >= blockBottom and
+                currHead <= blockBottom and
+                playerRight > blockLeft and
+                playerLeft < blockRight then
+            
+                if object.unlockable then
+                    local a = 1
+                end
+            
+                if object.unlockable and object.onCollide and object.onCollide(object, self.player) then
+                    table.remove(self.player.level.objects, k)
+                else
+                    object.onCollide(object)
+                    self.player.y = object.y + object.height
+                    self.player.dy = 0
+                    self.player:changeState('falling')
+                end
             end
         elseif object.consumable and object:collides(self.player) then
             object.onConsume(self.player)
