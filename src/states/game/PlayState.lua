@@ -19,7 +19,7 @@ function PlayState:init()
     self.gravityAmount = 900
 
     self.player = Player({
-        x = 0, y = 0,
+        x = self:getPlayerSpawnX(), y = 0,
         width = 16, height = 20,
         texture = 'green-alien',
         stateMachine = StateMachine {
@@ -134,4 +134,17 @@ function PlayState:spawnEnemies()
             end
         end
     end
+end
+
+-- Function to get the X coordinate of the player spawn point to avoid chasms
+function PlayState:getPlayerSpawnX()
+    for x = 1, self.tileMap.width do
+        for y = 1, self.tileMap.height do
+            if self.tileMap.tiles[y][x].id == TILE_ID_GROUND then
+                return (x - 1) * TILE_SIZE
+            end
+        end
+    end
+    -- fallback in case no ground is found (shouldn't happen)
+    return 0
 end
