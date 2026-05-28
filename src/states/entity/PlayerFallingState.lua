@@ -26,8 +26,11 @@ function PlayerFallingState:update(dt)
     self.player.y = self.player.y + (self.player.dy * dt)
 
     -- look at two tiles below our feet and check for collisions
-    local tileBottomLeft = self.player.map:pointToTile(self.player.x + 1, self.player.y + self.player.height)
-    local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
+    local tileBottomLeft = self.player.map:pointToTile(self.player.x + 2, self.player.y + self.player.height)
+    local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 2, self.player.y + self.player.height)
+
+    local hasGroundLeft = tileBottomLeft and tileBottomLeft:collidable()
+    local hasGroundRight = tileBottomRight and tileBottomRight:collidable()
 
     -- if we get a collision beneath us, go into either walking or idle
     if (tileBottomLeft and tileBottomRight) and (tileBottomLeft:collidable() or tileBottomRight:collidable()) then
