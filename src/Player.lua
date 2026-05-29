@@ -126,9 +126,11 @@ function Player:checkObjectCollisions()
 end
 
 -- Activate powerup variables and skins
-function Player:activatePowerup()
+function Player:activatePowerup(size)
+    size = size or 0
     self.powerup = true
-    self.powerupTimer = self.powerupTimer + POWERUP_DURATION
+    -- depending on the power up size we add an additional second
+    self.powerupTimer = self.powerupTimer + POWERUP_DURATION + (POWERUP_SIZE_BONUS[size] or 0)
     self.flashTimer = 0
     self.texture = 'blue-alien'
     self.psystem:setEmissionRate(40)
