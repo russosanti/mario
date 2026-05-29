@@ -37,6 +37,7 @@ require 'src.states.entity.PlayerFallingState'
 require 'src.states.entity.PlayerIdleState'
 require 'src.states.entity.PlayerJumpState'
 require 'src.states.entity.PlayerWalkingState'
+require 'src.states.entity.PlayerClimbingState'
 
 require 'src.states.entity.snail.SnailChasingState'
 require 'src.states.entity.snail.SnailIdleState'

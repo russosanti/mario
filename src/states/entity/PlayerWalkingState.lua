@@ -18,6 +18,11 @@ function PlayerWalkingState:init(player)
 end
 
 function PlayerWalkingState:update(dt)
+
+    if self.player:tryClimb() then
+        return
+    end
+
     self.player.currentAnimation:update(dt)
 
     -- idle if we're not pressing anything at all

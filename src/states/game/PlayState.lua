@@ -35,7 +35,8 @@ function PlayState:enter(params)
             ['idle'] = function() return PlayerIdleState(self.player) end,
             ['walking'] = function() return PlayerWalkingState(self.player) end,
             ['jump'] = function() return PlayerJumpState(self.player, self.gravityAmount) end,
-            ['falling'] = function() return PlayerFallingState(self.player, self.gravityAmount) end
+            ['falling'] = function() return PlayerFallingState(self.player, self.gravityAmount) end,
+            ['climbing'] = function() return PlayerClimbingState(self.player) end
         },
         map = self.tileMap,
         level = self.level,
