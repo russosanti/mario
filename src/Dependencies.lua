@@ -37,6 +37,7 @@ require 'src.states.entity.PlayerFallingState'
 require 'src.states.entity.PlayerIdleState'
 require 'src.states.entity.PlayerJumpState'
 require 'src.states.entity.PlayerWalkingState'
+require 'src.states.entity.PlayerClimbingState'
 
 require 'src.states.entity.snail.SnailChasingState'
 require 'src.states.entity.snail.SnailIdleState'
@@ -81,6 +82,7 @@ gTextures = {
     ['locks'] = love.graphics.newImage('graphics/keys_and_locks.png'),
     ['flags'] = love.graphics.newImage('graphics/flags.png'),
     ['fireballs'] = love.graphics.newImage('graphics/fireballs.png'),
+    ['ladders'] = love.graphics.newImage('graphics/ladders_and_signs.png')
 }
 
 gFrames = {
@@ -96,7 +98,8 @@ gFrames = {
     ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
     ['locks'] = GenerateQuads(gTextures['locks'], 16, 16),
     ['flags'] = GenerateFlagQuads(gTextures['flags']),
-    ['fireballs'] = GenerateQuads(gTextures['fireballs'], 16, 16)
+    ['fireballs'] = GenerateQuads(gTextures['fireballs'], 16, 16),
+    ['ladders'] = GenerateLadderQuads(gTextures['ladders'])
 }
 
 -- these need to be added after gFrames is initialized because they refer to gFrames from within

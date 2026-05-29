@@ -20,6 +20,11 @@ function PlayerIdleState:init(player)
 end
 
 function PlayerIdleState:update(dt)
+
+    if self.player:climb() then
+        return
+    end
+
     if love.keyboard.isDown('left') or love.keyboard.isDown('right') then
         self.player:changeState('walking')
     end

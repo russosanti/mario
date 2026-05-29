@@ -26,6 +26,7 @@ function GameObject:init(def)
     -- Render poles and flags
     self.frameGroup = def.frameGroup
     self.animation = def.animation
+    self.onRender = def.onRender
 end
 
 function GameObject:collides(target)
@@ -42,6 +43,10 @@ end
 
 -- Render function
 function GameObject:render()
+    if self.onRender then
+        self.onRender(self)
+        return
+    end
     local quads = self.frameGroup and gFrames[self.texture][self.frameGroup] or gFrames[self.texture]
     love.graphics.draw(gTextures[self.texture], quads[self.frame], self.x, self.y)
 end

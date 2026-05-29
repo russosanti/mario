@@ -162,3 +162,37 @@ function Player:checkEntityCollisions()
         end
     end
 end
+
+-- Check if we are on top of a ladder
+function Player:overlappingLadder()
+    for k, object in pairs(self.level.objects) do
+        if object.texture == 'ladders' and object:collides(self) then
+            return object
+        end
+    end
+    return nil
+end
+
+-- starts to climb
+function Player:climb()
+    if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
+        local ladder = self:overlappingLadder()
+        if ladder then
+            self:changeState('climbing', {ladder = ladder})
+            return true
+        end
+    end
+    return false
+end
+
+-- Grab ladder on jump
+function Player:grabLadder()
+    if not love.keyboard.isDown('left') and not love.keyboard.isDown('right') then
+        local ladder = self:overlappingLadder()
+        if ladder then
+            self:changeState('climbing', {ladder = ladder})
+            return true
+        end
+    end
+    return false
+end
