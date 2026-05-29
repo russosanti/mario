@@ -152,13 +152,23 @@ function LevelMaker.generateJumpBlock(objects, blockHeight, x, containsKey, keyC
                         end
                 )
 
-                elseif math.random(5) == 1 then -- chance to spawn gem, not guaranteed
-					LevelMaker.spawnBlockItem(objects, 'gems', x, blockHeight, math.random(#GEMS),
-                        function(player, object)
-                            gSounds["pickup"]:play()
-                            player.score = player.score + 100
-                        end
-                    )
+                elseif math.random(4) == 1 then -- chance to spawn gem, not guaranteed
+                    if math.random(3) == 1 then
+                        local frame = math.random(FIREBALLS_COUNT)
+                        LevelMaker.spawnBlockItem(objects, 'fireballs', x, blockHeight, frame,
+                            function(player, object)
+                                gSounds["pickup"]:play()
+                                player:activatePowerup((frame - 1) % 4)
+                            end
+                        )
+                    else
+                        LevelMaker.spawnBlockItem(objects, 'gems', x, blockHeight, math.random(#GEMS),
+                            function(player, object)
+                                gSounds["pickup"]:play()
+                                player.score = player.score + 100
+                            end
+                        )
+                    end
                 end
 				obj.hit = true
 			end
