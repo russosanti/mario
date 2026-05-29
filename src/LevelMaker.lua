@@ -147,7 +147,7 @@ function LevelMaker.generateJumpBlock(objects, blockHeight, x, containsKey, keyC
                 if obj.containsKey then
                     LevelMaker.spawnBlockItem(objects, 'locks', x, blockHeight, KEYS[keyColor],
                         function(player, object)
-                            gSounds["pickup"]:play()
+                            gSounds["key"]:play()
                             player.hasKey = true
                         end
                 )
@@ -211,7 +211,7 @@ function LevelMaker.generateLockBlock(blockHeight, x, keyColor)
         onCollide = function(obj, player)
             if player.hasKey then
                 player.hasKey = false
-                gSounds["empty-block"]:play()
+                gSounds["unlock"]:play()
                 LevelMaker.spawnGoalPost(player.level)
                 return true
             end

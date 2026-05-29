@@ -10,8 +10,6 @@ PlayState = Class{__includes = BaseState}
 function PlayState:init()
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(100, 10)
-    self.tileMap = self.level.tileMap
     self.background = math.random(3)
     self.backgroundX = 0
 
@@ -19,6 +17,15 @@ function PlayState:init()
 
     self.gravityOn = true
     self.gravityAmount = 900
+end
+
+-- Sets score when next level generated from win
+function PlayState:enter(params)
+    params = params or {}
+    self.levelWidth = params.width or 100
+
+    self.level = LevelMaker.generate(self.levelWidth, 10)
+    self.tileMap = self.level.tileMap
 
     self.player = Player({
         x = self:getPlayerSpawnX(), y = 0,
@@ -31,19 +38,12 @@ function PlayState:init()
             ['falling'] = function() return PlayerFallingState(self.player, self.gravityAmount) end
         },
         map = self.tileMap,
-        level = self.level
+        level = self.level,
     })
+    self.player.score = params.score or 0
 
     self:spawnEnemies()
-
     self.player:changeState('falling')
-end
-
--- Sets score when next level generated from win
-function PlayState:enter(params)
-    if params and params.score then
-        self.player.score = params.score
-    end
 end
 
 function PlayState:update(dt)
@@ -185,7 +185,7 @@ function PlayState:victoryLap()
     Timer.tween(2, {
         [self.level.goalFlag] = { y = self.level.goalPole.y + FLAG_POLE_HEIGHT - 2 - FLAG_HEIGHT}
     }):finish(function()
-        for k, objects in pairs(self.level.objects) do
+        for k, object in pairs(self.level.objects) do
             if object == self.level.goalFlag then
                 table.remove(self.level.objects, k)
                 break
@@ -193,7 +193,10 @@ function PlayState:victoryLap()
         end
 
         Timer.after(0.5, function ()
-            gStateMachine:change('play', {score = self.player.score})
+            gStateMachine:change('play', {
+                score = self.player.score,
+                width = self.levelWidth * 1.2
+            })
         end)
     end)
 end
