@@ -174,8 +174,20 @@ function Player:overlappingLadder()
 end
 
 -- starts to climb
-function Player:tryClimb()
-    if love.keyboard.isDown('up') then
+function Player:climb()
+    if love.keyboard.wasPressed('up') or love.keyboard.wasPressed('down') then
+        local ladder = self:overlappingLadder()
+        if ladder then
+            self:changeState('climbing', {ladder = ladder})
+            return true
+        end
+    end
+    return false
+end
+
+-- Grab ladder on jump
+function Player:grabLadder()
+    if not love.keyboard.isDown('left') and not love.keyboard.isDown('right') then
         local ladder = self:overlappingLadder()
         if ladder then
             self:changeState('climbing', {ladder = ladder})

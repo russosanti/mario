@@ -19,7 +19,7 @@ end
 
 function PlayerWalkingState:update(dt)
 
-    if self.player:tryClimb() then
+    if self.player:climb() then
         return
     end
 

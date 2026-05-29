@@ -21,6 +21,11 @@ function PlayerFallingState:init(player, gravity)
 end
 
 function PlayerFallingState:update(dt)
+
+    if self.player:grabLadder() then
+        return
+    end
+
     self.player.currentAnimation:update(dt)
     self.player.dy = self.player.dy + self.gravity * dt
     self.player.y = self.player.y + (self.player.dy * dt)
