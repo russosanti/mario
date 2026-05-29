@@ -84,6 +84,11 @@ FLAG_POLE_COUNT = 6
 FLAG_WIDTH = 16
 FLAG_HEIGHT = 16
 
+
+-- Ladder constants
+LADDER_WIDTH = 16
+LADDER_HEIGHT = 32
+
 --
 -- game object IDs
 --
