@@ -87,7 +87,7 @@ FLAG_HEIGHT = 16
 
 -- Ladder constants
 LADDER_WIDTH = 16
-LADDER_HEIGHT = 32
+LADDER_HEIGHT = 16
 
 --
 -- game object IDs

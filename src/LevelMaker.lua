@@ -71,22 +71,22 @@ function LevelMaker.generate(width, height)
 			elseif x < width - 1 and math.random(20) == 1 then
 				-- ladder on this collumn
 				pillarNext = true
-				for i = 0, ((7 - tallPillarTop) / 2) - 1 do
-					table.insert(
-						objects,
-						GameObject({
-							texture = "ladders",
-							x = (x - 1) * TILE_SIZE,
-							y = (tallPillarTop - 1 + i * 2) * TILE_SIZE,
-							width = LADDER_WIDTH,
-							height = LADDER_HEIGHT,
-							frame = 1,
-							collidable = false,
-							solid = false,
-							consumable = false,
-						})
-					)
-				end
+				table.insert(objects, GameObject {
+					texture = "ladders",
+					x = (x - 1) * TILE_SIZE,
+					y = (tallPillarTop - 1) * TILE_SIZE,
+					width = LADDER_WIDTH,
+					height = (7 - tallPillarTop) * TILE_SIZE,
+					collidable = false,
+					solid = false,
+					consumable = false,
+                    onRender = function (self)
+                        love.graphics.draw(gTextures['ladders'], gFrames['ladders'][1], self.x, self.y)
+                        for cy = self.y + TILE_SIZE, self.y + self.height - TILE_SIZE, TILE_SIZE do
+                            love.graphics.draw(gTextures['ladders'], gFrames['ladders'][2], self.x, cy)
+                        end
+                    end,
+				})
 			else
 				-- chance to generate a pillar
 				if math.random(8) == 1 then

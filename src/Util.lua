@@ -85,7 +85,8 @@ end
 
 function GenerateLadderQuads(atlas)
     return {
-        love.graphics.newQuad(0, 0, LADDER_WIDTH, LADDER_HEIGHT, atlas:getDimensions())
+        love.graphics.newQuad(0, 0, LADDER_WIDTH, LADDER_HEIGHT, atlas:getDimensions()),
+        love.graphics.newQuad(0, LADDER_HEIGHT, LADDER_WIDTH, LADDER_HEIGHT, atlas:getDimensions())
     }
 end
 
