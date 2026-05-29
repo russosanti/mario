@@ -15,6 +15,8 @@ function PlayState:init()
     self.background = math.random(3)
     self.backgroundX = 0
 
+    self.victory = false
+
     self.gravityOn = true
     self.gravityAmount = 900
 
@@ -37,14 +39,24 @@ function PlayState:init()
     self.player:changeState('falling')
 end
 
+-- Sets score when next level generated from win
+function PlayState:enter(params)
+    if params and params.score then
+        self.player.score = params.score
+    end
+end
+
 function PlayState:update(dt)
     Timer.update(dt)
 
     -- remove any nils from pickups, etc.
     self.level:clear()
 
-    -- update player and level
-    self.player:update(dt)
+    -- update player if not victory. Else freeze
+    if not self.victory then
+        self.player:update(dt)
+    end
+    -- update level
     self.level:update(dt)
     self:updateCamera()
 
@@ -53,6 +65,11 @@ function PlayState:update(dt)
         self.player.x = 0
     elseif self.player.x > TILE_SIZE * self.tileMap.width - self.player.width then
         self.player.x = TILE_SIZE * self.tileMap.width - self.player.width
+    end
+
+    -- if player reaches the goalPole
+    if not self.victory and self.level.goalPole and self.level.goalPole:collides(self.player) then
+        self:victoryLap()
     end
 end
 
@@ -147,4 +164,36 @@ function PlayState:getPlayerSpawnX()
     end
     -- fallback in case no ground is found (shouldn't happen)
     return 0
+end
+
+-- Vicory setting and animation tween
+function PlayState:victoryLap()
+    self.victory = true
+    self.player:changeState('idle') -- freeze in idle pose
+
+    -- Drop player to pole center
+    Timer.tween(0.3, {
+        [self.player] = {
+            x = self.level.goalPole.x + (FLAG_POLE_WIDTH - self.player.width) / 2,
+            y = self.level.goalPole.y + FLAG_POLE_HEIGHT - self.player.height,
+        }
+    })
+
+    self.level.goalFlag.animation = nil
+    self.level.goalFlag.frame = self.level.goalFlagCaptured
+
+    Timer.tween(2, {
+        [self.level.goalFlag] = { y = self.level.goalPole.y + FLAG_POLE_HEIGHT - 2 - FLAG_HEIGHT}
+    }):finish(function()
+        for k, objects in pairs(self.level.objects) do
+            if object == self.level.goalFlag then
+                table.remove(self.level.objects, k)
+                break
+            end
+        end
+
+        Timer.after(0.5, function ()
+            gStateMachine:change('play', {score = self.player.score})
+        end)
+    end)
 end

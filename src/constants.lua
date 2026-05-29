@@ -70,6 +70,14 @@ COLLIDABLE_TILES = {
     TILE_ID_GROUND
 }
 
+-- Flags constants
+FLAG_POLE_WIDTH = 16
+FLAG_POLE_HEIGHT = 48
+FLAG_POLE_COUNT = 6
+
+FLAG_WIDTH = 16
+FLAG_HEIGHT = 16
+
 --
 -- game object IDs
 --
@@ -95,6 +103,14 @@ KEYS = {
 
 LOCKS = {
     5, 6, 7, 8
+}
+
+-- Flags animation and captured id grouped by color
+FLAGS = {
+    { anim = { 1, 2 },  captured = 3  },
+    { anim = { 4, 5 },  captured = 6  },
+    { anim = { 7, 8 },  captured = 9  },
+    { anim = { 10, 11 }, captured = 12 },
 }
 
 JUMP_BLOCKS = {}

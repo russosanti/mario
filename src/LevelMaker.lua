@@ -123,6 +123,7 @@ function LevelMaker.generate(width, height)
     return GameLevel(entities, objects, map)
 end
 
+-- Generates a jump block which may contain a key or not
 function LevelMaker.generateJumpBlock(objects, blockHeight, x, containsKey, keyColor)
 	-- jump block
 	return GameObject({
@@ -167,6 +168,7 @@ function LevelMaker.generateJumpBlock(objects, blockHeight, x, containsKey, keyC
 	})
 end
 
+-- Generates the object to spawn on colission with block: key or gems
 function LevelMaker.spawnBlockItem(objects, texture, x, blockHeight, frame, onConsume)
     local item = GameObject({
         texture = texture,
@@ -189,6 +191,7 @@ function LevelMaker.spawnBlockItem(objects, texture, x, blockHeight, frame, onCo
     table.insert(objects, item)
 end
 
+-- Generates Lock Block
 function LevelMaker.generateLockBlock(blockHeight, x, keyColor)
     -- lock block
     return GameObject({
@@ -209,9 +212,76 @@ function LevelMaker.generateLockBlock(blockHeight, x, keyColor)
             if player.hasKey then
                 player.hasKey = false
                 gSounds["empty-block"]:play()
+                LevelMaker.spawnGoalPost(player.level)
                 return true
             end
             return false
         end,
     })
+end
+
+-- Finds a column at the end that has not a chasm. If it is a pillar it returns the row
+local function groundRowAt(tileMap, col)
+    for row = 1, tileMap.height do
+        if tileMap.tiles[row][col]:collidable() then
+            return row
+        end
+    end
+    return nil
+end
+
+-- Finds row and column to place the flag
+local function poleCoordinates(level)
+    local col = level.tileMap.width - 1
+    local groundRow = groundRowAt(level.tileMap, col)
+    while not groundRow and col > 1 do
+        col = col - 1
+        groundRow = groundRowAt(level.tileMap, col)
+    end
+    groundRow = groundRow or 7
+
+    return (col - 1) * TILE_SIZE, (groundRow - 1) * TILE_SIZE - FLAG_POLE_HEIGHT
+end
+
+-- Spawns Goal Post on the end of the level
+function LevelMaker.spawnGoalPost(level)
+
+    local poleX, poleY = poleCoordinates(level)
+    local color = math.random(#FLAGS)
+
+    -- insert pole
+    local pole = GameObject{
+        texture = 'flags',
+        frameGroup = 'poles',
+        frame = 1,
+        x = poleX,
+        y = poleY,
+        width = FLAG_POLE_WIDTH,
+        height = FLAG_POLE_HEIGHT,
+        collidable = false,
+        solid = false,
+        consumable = false,
+    }
+
+    -- insert flag in pole
+    local flag = GameObject{
+        texture = 'flags',
+        frameGroup = 'flags',
+        frame = FLAGS[color].anim[1],
+        x = poleX + FLAG_WIDTH / 2,
+        y = poleY + 4, -- To put it under the end of the pole
+        width = FLAG_WIDTH,
+        height = FLAG_HEIGHT,
+        collidable = false,
+        solid = false,
+        consumable = false,
+        animation = Animation { frames = FLAGS[color].anim, interval = 0.2}
+    }
+    
+    table.insert(level.objects, pole)
+    table.insert(level.objects, flag)
+
+    level.goalPole = pole
+    level.goalFlag = flag
+    level.goalFlagCaptured = FLAGS[color].captured
 end

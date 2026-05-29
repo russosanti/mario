@@ -23,6 +23,9 @@ function GameObject:init(def)
     self.hit = def.hit
     self.containsKey = def.containsKey
     self.unlockable = def.unlockable
+    -- Render poles and flags
+    self.frameGroup = def.frameGroup
+    self.animation = def.animation
 end
 
 function GameObject:collides(target)
@@ -31,9 +34,14 @@ function GameObject:collides(target)
 end
 
 function GameObject:update(dt)
-
+    if self.animation then
+        self.animation:update(dt)
+        self.frame = self.animation:getCurrentFrame()
+    end
 end
 
+-- Render function
 function GameObject:render()
-    love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.frame], self.x, self.y)
+    local quads = self.frameGroup and gFrames[self.texture][self.frameGroup] or gFrames[self.texture]
+    love.graphics.draw(gTextures[self.texture], quads[self.frame], self.x, self.y)
 end
