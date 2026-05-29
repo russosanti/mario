@@ -75,24 +75,28 @@ gTextures = {
     ['gems'] = love.graphics.newImage('graphics/gems.png'),
     ['backgrounds'] = love.graphics.newImage('graphics/backgrounds.png'),
     ['green-alien'] = love.graphics.newImage('graphics/green_alien.png'),
+    ['blue-alien'] = love.graphics.newImage('graphics/blue_alien.png'),
+    ['pink-alien'] = love.graphics.newImage('graphics/pink_alien.png'),
     ['creatures'] = love.graphics.newImage('graphics/creatures.png'),
     ['locks'] = love.graphics.newImage('graphics/keys_and_locks.png'),
-    ['flags'] = love.graphics.newImage('graphics/flags.png')
+    ['flags'] = love.graphics.newImage('graphics/flags.png'),
+    ['fireballs'] = love.graphics.newImage('graphics/fireballs.png'),
 }
 
 gFrames = {
-    ['tiles'] = GenerateQuads(gTextures['tiles'], TILE_SIZE, TILE_SIZE),
-    
+    ['tiles'] = GenerateQuads(gTextures['tiles'], TILE_SIZE, TILE_SIZE), 
     ['toppers'] = GenerateQuads(gTextures['toppers'], TILE_SIZE, TILE_SIZE),
-    
     ['bushes'] = GenerateQuads(gTextures['bushes'], 16, 16),
     ['jump-blocks'] = GenerateQuads(gTextures['jump-blocks'], 16, 16),
     ['gems'] = GenerateQuads(gTextures['gems'], 16, 16),
     ['backgrounds'] = GenerateQuads(gTextures['backgrounds'], 256, 128),
     ['green-alien'] = GenerateQuads(gTextures['green-alien'], 16, 20),
+    ['blue-alien'] = GenerateQuads(gTextures['blue-alien'], 16, 20),
+    ['pink-alien'] = GenerateQuads(gTextures['pink-alien'], 16, 20),
     ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
     ['locks'] = GenerateQuads(gTextures['locks'], 16, 16),
-    ['flags'] = GenerateFlagQuads(gTextures['flags'])
+    ['flags'] = GenerateFlagQuads(gTextures['flags']),
+    ['fireballs'] = GenerateQuads(gTextures['fireballs'], 16, 16)
 }
 
 -- these need to be added after gFrames is initialized because they refer to gFrames from within
@@ -108,3 +112,8 @@ gFonts = {
     ['large'] = love.graphics.newFont('fonts/font.ttf', 32),
     ['title'] = love.graphics.newFont('fonts/ArcadeAlternate.ttf', 32)
 }
+
+-- small white particle used for effects (e.g. the supercharged glow)
+local particleData = love.image.newImageData(2, 2)
+particleData:mapPixel(function() return 1, 1, 1, 1 end)
+gTextures['particle'] = love.graphics.newImage(particleData)

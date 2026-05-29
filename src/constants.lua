@@ -59,6 +59,10 @@ SNAIL_MOVE_SPEED = 10
 -- key and lock size
 LOCK_SIZE = 16
 
+-- powerup default duration in secs
+POWERUP_DURATION = 10
+FIREBALLS_COUNT = 16
+
 --
 -- tile IDs
 --
