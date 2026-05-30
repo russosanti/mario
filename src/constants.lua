@@ -63,7 +63,7 @@ LOCK_SIZE = 16
 POWERUP_DURATION = 10
 FIREBALLS_COUNT = 16
 -- seconds added depending on powerup size
-POWERUP_SIZE_BONUS = { [0] = 0, [1] = 1, [2] = 2, [3] = 3 }
+POWERUP_SIZE_BONUS = { [0] = 0, [1] = 2, [2] = 4, [3] = 6 }
 
 --
 -- tile IDs
